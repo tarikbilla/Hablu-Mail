@@ -2,6 +2,12 @@
 	height: 60px;
 }
 
+.header_profile_default_avt{
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+}
+
 .content{
 	height: 500px;
 }
@@ -39,8 +45,22 @@
 	font-size: 14px;
 }
 
-.profile_default_avt{
-	height: 40px;
-	width: 40px;
-	border-radius: 50%;
+.profile_pic{
+	position: relative;
+	height: 150px;
+	width: 150px;
+	text-align: center;
+}
+.profile_pic img{
+	height: 150px;
+	width: 150px;
+}
+.profile_pic a{
+	position: relative;
+	top: -70px;
+	display: none;
+}
+
+.profile_pic:hover a{
+	display: inline-block;
 }

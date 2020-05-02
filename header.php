@@ -10,13 +10,13 @@
 
 </head>
 <body>
- <?php echo $_SESSION['f_name']; if( !$user->is_logged_in() ){ header('Location: login.php'); exit(); } ?>
+ <?php if( !$user->is_logged_in() ){ header('Location: login.php'); exit(); } ?>
 	<div class="container border-bottom header">
 		<div class="row">
 			<div class="col-4 h3">HabluMail</div>
 			<div class="col-4 h3"></div>
 			<div class="col-4 h3 text-right">
-				<a href="profile.php"> <?php $uaer_data=$user->user_data_from_db(); echo $uaer_data['email']?> <img class="profile_default_avt" src="assets/images/user_profile.jpg" alt="">
+				<a href="profile.php"> <?php $uaer_data=$user->get_profile_info(); echo $uaer_data['email']?> <img class="header_profile_default_avt" src="assets/images/user_profile.jpg" alt="">
 				</a>
 			</div>
 		</div>

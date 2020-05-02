@@ -37,7 +37,7 @@ if(isset($_POST['reg'])){
     }
 
     //email validation
-    $email = $_POST['email']."@hublumail.com";
+    $email = $_POST['email']."@hablumail.com";
     $email = htmlspecialchars_decode($email, ENT_QUOTES);
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         $error[] = 'Please enter a valid email address';

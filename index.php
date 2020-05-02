@@ -5,8 +5,6 @@
 <?php require_once('includes/functions.php'); ?>
 	<div class="h3">Inbox</div>
 
-
-			
 				<a href="single.php?mail_id=12" class="msg">
 					<span class="sender">Mr. Hablu</span>
 					<span class="subject">Lorem ipsum dolor sit amet, consectetur </span>

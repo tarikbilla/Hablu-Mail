@@ -55,7 +55,7 @@ class User extends Password{
 		}
 	}
 
-	public function user_data_from_db(){
+	public function get_profile_info(){
 			try {
 			$stmt = $this->_db->prepare("SELECT * FROM members WHERE username = :username");
 			$stmt->execute(array(':username' => $_SESSION['username']));

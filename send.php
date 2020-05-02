@@ -4,17 +4,17 @@
 <div class="h3 border-bottom">Send New Mail</div>
 <form>
   <div class="form-group">
-    <label for="">Email address</label>
-    <input type="email" class="form-control" id="" placeholder="name@hablumail.com" name="sender_mail">
+    <label for="">To</label>
+    <input type="email" class="form-control" name="mail_to" id="" placeholder="name@hablumail.com">
   </div>
   <div class="form-group">
     <label for="">Subject</label>
-    <input type="text" class="form-control" id="" placeholder="" name="subject">
+    <input type="text" class="form-control" name="mail_subject" id="" placeholder="">
   </div>
 
   <div class="form-group">
-    <label for="">Example textarea</label>
-    <textarea class="form-control" id="" rows="3"></textarea>
+    <label for="">Body</label>
+    <textarea class="form-control" name="mail_body" id="" rows="3"></textarea>
   </div>
     <div class="row">
     	<div class="col-6">
