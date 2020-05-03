@@ -34,6 +34,57 @@
      }
  }
   ?>
+
+<?php 
+// profile pic upload
+  if (isset($_POST['pic_upload'])) {
+    $target_file = "assets/images/user_profile_pic/" . $_SESSION['username'].".png";
+    // Check file size
+    if ($_FILES["fileToUpload"]["size"] > 5000000) {
+        $msg = '<div class="alert alert-danger">Sorry, your file is too large.</div>';
+    }else{
+
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            $url = $_SESSION['username'].".png";
+            profile_pic_url_update($db,$url);
+            header('Location: profile.php');
+        } else {
+            $msg = '<div class="alert alert-danger">Faild To Upload!</div>';
+        }
+    }
+  }
+?>
+
+<?php 
+// change passsword
+    if (isset($_POST['update_pass'])) {
+        // $old_pass = $_POST['old_pass'];
+        $new_pass = $_POST['new_pass'];
+        $conf_new_pass = $_POST['conf_new_pass'];
+
+        if ($new_pass === $conf_new_pass) {
+            if(strlen($new_pass)<4){
+            $msg = '<div class="alert alert-danger">Password is too short</div>';
+            }else{
+                //hash the password
+                $pass = $user->password_hash($conf_new_pass, PASSWORD_BCRYPT);
+                $sta = hublu_change_password($db, $pass);
+                if ($sta==true) {
+                    $msg = '<div class="alert alert-success">Your password successfully changed!.</div>';
+
+                }else{
+                    $msg = '<div class="alert alert-danger">Faild! Plsease Try Again</div>';
+
+                }
+            }
+        }else{
+            $msg = '<div class="alert alert-danger">Password is not Mach.</div>';
+
+        }
+
+
+    }
+ ?>
     
 	<div class="h3">profile</div> 
 	<hr>
@@ -47,12 +98,21 @@
 	 <div class="row">
         <div class="col-3">
             <div class="profile_pic">
-                <img src="assets/images/user_profile.jpg" alt="profile image-thumn" class="img-fluid rounded-circle shadow">
-                <a href="?action=change_pic" class="btn btn-light px-3 shadow">Edit</a>
+                <?php 
+                    $profile_pic_url = hablu_check_profile_pic($db); 
+
+                    if(strlen($profile_pic_url)<1){?>
+                        <img src="assets/images/user_profile.jpg" alt="profile image-thumn" class="img-fluid rounded-circle shadow">
+                    <?php }else{?>
+                        <img src="assets/images/user_profile_pic/<?php echo $profile_pic_url; ?>" alt="profile image-thumn" class="img-fluid rounded-circle shadow">
+                    <?php } ?>
+                
+                <a href="?action=change_pic" class="btn btn-light px-3 shxadow">Edit</a>
             </div>
 			<br>
             <a href="?action=edit" class="btn btn-sm-light btn-block mt-2 border">Edit Profile</a>
             <a href="?action=change_pass" class="btn btn-sm-light btn-block border">Change Password</a>
+            <a href="logout.php" class="btn btn-light btn-block border">Log Out</a>
         </div>
 
         <div class="col-9">
@@ -98,14 +158,14 @@
 
                         case 'change_pass':?>
                                 <form action="" method="post">
-                                 <div class="text-muted ">Old Password</div>
+                                 <!-- <div class="text-muted ">Old Password</div>
                                  <h5><input  class="form-control" type="password" name="old_pass"></h5>
-                                 <hr>
+                                 <hr> -->
                                  <div class="text-muted ">New Password</div>
                                  <h5><input  class="form-control" type="password" name="new_pass"></h5>
                                  <hr>
                                  <div class="text-muted ">Confirm New Password</div>
-                                 <h5><input  class="form-control" type="password" name="conf_pass"></h5>
+                                 <h5><input  class="form-control" type="password" name="conf_new_pass"></h5>
                                  <hr>
                                  <div class="row">
                                      <div class="col-6">
@@ -122,6 +182,19 @@
 
                         <?php    
                         break;
+
+                        case 'change_pic':?>
+
+                            <form action="" method="post" enctype="multipart/form-data">
+                                Select image to upload:
+                                <br>
+                                <input type="file" name="fileToUpload" id="fileToUpload" class="">
+                                <br>
+                                <input type="submit" value="Upload Image" name="pic_upload" class="btn btn-primary mt-2">
+                            </form>
+                        <?php
+                        break;
+
                     }
                 }else{
 

@@ -21,9 +21,6 @@
 				  	<a class="nav-link" href="trash.php">
 				  		Trash <span class="badge badge-pill badge-primary">5</span>
 				  	</a>
-				  	<a class="nav-link text-danger" href="logout.php">
-				  		LogOut
-				  	</a>
 				</nav>
 			</div>
 			<div class="col-9 msg-list">

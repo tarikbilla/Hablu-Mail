@@ -16,7 +16,18 @@
 			<div class="col-4 h3">HabluMail</div>
 			<div class="col-4 h3"></div>
 			<div class="col-4 h3 text-right">
-				<a href="profile.php"> <?php $uaer_data=$user->get_profile_info(); echo $uaer_data['email']?> <img class="header_profile_default_avt" src="assets/images/user_profile.jpg" alt="">
+				<a href="profile.php"> <?php $uaer_data=$user->get_profile_info(); echo $uaer_data['email']?> 
+
+				<?php 
+                    $profile_pic_url = hablu_check_profile_pic($db); 
+
+                    if(strlen($profile_pic_url)<1){?>
+                        <img class="header_profile_default_avt" src="assets/images/user_profile.jpg" alt="">
+                    <?php }else{?>
+                    	<img class="header_profile_default_avt" src="assets/images/user_profile_pic/<?php echo $profile_pic_url; ?>" alt="">
+                    <?php } ?>
+
+				
 				</a>
 			</div>
 		</div>
