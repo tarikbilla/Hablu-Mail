@@ -39,7 +39,7 @@
 
 
 
-	function hublu_change_password($db, $pass){
+	function hablu_change_password($db, $pass){
 		try {
 			$stmt = $db->prepare("UPDATE members SET password=:password WHERE memberID = :memberID");
 			$stmt->execute(array(
@@ -51,3 +51,51 @@
 			return false;
 		}
 	}
+
+
+	function hablu_check_mail_valid($db, $h_mail){
+		foreach ($db->query("SELECT * FROM members WHERE email = '$h_mail'") as $row){
+			$col = $row['email'];
+			if (!empty($col)) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+
+	function hablu_check_reciver_id($db, $h_mail){
+		foreach ($db->query("SELECT * FROM members WHERE email = '$h_mail'") as $row){
+			$col = $row['memberID'];
+			if (!empty($col)) {
+				return $col;
+			}
+		}
+	}
+
+
+	function hablu_create_new_nail($db,$mail_to, $mail_sub ,$mail_body, $reciver_id){
+
+		try {
+			$stmt = $db->prepare("INSERT INTO mail(sender_id, reciver_id, sender_mail, reciver_mail, mail_subject, mail_content, mail_date, mail_time, mail_status) VALUES (:sender_id, :reciver_id, :sender_mail, :reciver_mail, :mail_subject, :mail_content, :mail_date, :mail_time, :mail_status)");
+			$stmt->execute(array(
+				':sender_id' => $_SESSION['memberID'],
+				':reciver_id' => $reciver_id,
+				':sender_mail' => $_SESSION['username']."@hablumail.com",
+				':reciver_mail' => $mail_to,
+				':mail_subject' => $mail_sub,
+				':mail_content' => $mail_body,
+				':mail_date' => date("d-m-Y"),
+				':mail_time' => date("h:i:s"),
+				':mail_status' => "inbox"
+			));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+
+
+	

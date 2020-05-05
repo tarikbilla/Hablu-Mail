@@ -68,7 +68,7 @@
             }else{
                 //hash the password
                 $pass = $user->password_hash($conf_new_pass, PASSWORD_BCRYPT);
-                $sta = hublu_change_password($db, $pass);
+                $sta = hablu_change_password($db, $pass);
                 if ($sta==true) {
                     $msg = '<div class="alert alert-success">Your password successfully changed!.</div>';
 
