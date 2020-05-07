@@ -98,4 +98,15 @@
 
 
 
+function hablu_gate_user_info($db, $meber_id){
+		try {
+			$stmt = $db->prepare("SELECT * FROM members WHERE memberID = :memberid");
+			$stmt->execute(array(':memberid' => $meber_id));
+
+			$row =$stmt->fetch();
+			return $row;
+
+		} catch(PDOException $e) {}
+}
+
 	

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2020 at 01:10 PM
+-- Generation Time: May 07, 2020 at 01:01 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -41,6 +41,17 @@ CREATE TABLE `mail` (
   `mail_status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `mail`
+--
+
+INSERT INTO `mail` (`id`, `sender_id`, `reciver_id`, `sender_mail`, `reciver_mail`, `mail_subject`, `mail_content`, `mail_date`, `mail_time`, `mail_status`) VALUES
+(4, 1, 1, 'tarik@hablumail.com', 'tarik@hablumail.com', 'just test mail', 'qqqq', '05-05-2020', '04:43:06', 'inbox'),
+(5, 1, 1, 'tarik@hablumail.com', 'tarik@hablumail.com', 'it is my second message', 'hello mr/', '05-05-2020', '04:55:35', 'inbox'),
+(6, 1, 2, 'tarik@hablumail.com', 'hablu@hublumail.com', 'need to online metting very early', 'hello........', '05-05-2020', '04:57:19', 'inbox'),
+(7, 1, 2, 'tarik@hablumail.com', 'hablu@hablumail.com', 'welcome', 'hello hablu...', '07-05-2020', '03:34:05', 'inbox'),
+(8, 2, 1, 'hablu@hablumail.com', 'tarik@hablumail.com', 'hello tarik!', 'hello ....', '07-05-2020', '03:50:03', 'inbox');
+
 -- --------------------------------------------------------
 
 --
@@ -68,7 +79,7 @@ CREATE TABLE `members` (
 
 INSERT INTO `members` (`memberID`, `first_name`, `last_name`, `username`, `password`, `email`, `address`, `gender`, `profile_pic_url`, `active`, `resetToken`, `resetComplete`) VALUES
 (1, 'Tarik', 'Billa', 'tarik', '$2y$10$1JlX1HHfmmuy6y6mVgurCu6LlD1mD8xZo663HWPLRAVneKgwA0JZK', 'tarik@hablumail.com', 'Jessore', 'Male', 'tarik.png', 'Yes', NULL, 'No'),
-(2, 'Mr.', 'Hablu', 'hablu', '$2y$10$S9rSqQbLXfoNiW1PXeNoY.cZQqcph53jhErQcebhceankGgtgyE2m', 'hablu@hublumail.com', '', '', 'hablu.png', 'Yes', NULL, 'No');
+(2, 'Mr.', 'Hablu', 'hablu', '$2y$10$S9rSqQbLXfoNiW1PXeNoY.cZQqcph53jhErQcebhceankGgtgyE2m', 'hablu@hablumail.com', '', '', 'hablu.png', 'Yes', NULL, 'No');
 
 --
 -- Indexes for dumped tables
@@ -94,7 +105,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `mail`
 --
 ALTER TABLE `mail`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `members`
