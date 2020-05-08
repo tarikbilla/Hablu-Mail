@@ -74,7 +74,7 @@
 	}
 
 
-	function hablu_create_new_nail($db,$mail_to, $mail_sub ,$mail_body, $reciver_id){
+	function hablu_send_new_mail($db,$mail_to, $mail_sub ,$mail_body, $reciver_id){
 
 		try {
 			$stmt = $db->prepare("INSERT INTO mail(sender_id, reciver_id, sender_mail, reciver_mail, mail_subject, mail_content, mail_date, mail_time, mail_status) VALUES (:sender_id, :reciver_id, :sender_mail, :reciver_mail, :mail_subject, :mail_content, :mail_date, :mail_time, :mail_status)");
@@ -89,6 +89,73 @@
 				':mail_time' => date("h:i:s"),
 				':mail_status' => "inbox"
 			));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+	function hablu_send_draft_mail($db,$mail_to, $mail_sub ,$mail_body, $reciver_id, $m_id){
+		$sender_id= $_SESSION['memberID'];
+		$reciver_id= $reciver_id;
+		$sender_mail= $_SESSION['username']."@hablumail.com";
+		$reciver_mail= $mail_to;
+		$mail_subject= $mail_sub;
+		$mail_content= $mail_body;
+		$mail_date= date("d-m-Y");
+		$mail_time= date("h:i:s");
+		$mail_status= "inbox";
+		$mail_id = $m_id;
+
+		try {
+			$stmt = $db->prepare("UPDATE mail SET sender_id=?, reciver_id=?, sender_mail=?, reciver_mail=?, mail_subject=?, mail_content=?, mail_date=?, mail_time=?, mail_status=? WHERE id = ?");
+			$stmt->execute(array(
+				$sender_id,
+				$reciver_id,
+				$sender_mail,
+				$reciver_mail,
+				$mail_subject,
+				$mail_content,
+				$mail_date,
+				$mail_time,
+				$mail_status,
+				$mail_id
+			));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+	function hablu_save_draft_mail($db,$mail_to, $mail_sub ,$mail_body){
+
+		try {
+			$stmt = $db->prepare("INSERT INTO mail(sender_id, reciver_mail, mail_subject, mail_content, mail_date, mail_time, mail_status) VALUES (:sender_id, :reciver_mail, :mail_subject, :mail_content, :mail_date, :mail_time, :mail_status)");
+			$stmt->execute(array(
+				':sender_id' => $_SESSION['memberID'],
+				':reciver_mail' => $mail_to,
+				':mail_subject' => $mail_sub,
+				':mail_content' => $mail_body,
+				':mail_date' => date("d-m-Y"),
+				':mail_time' => date("h:i:s"),
+				':mail_status' => "draft"
+			));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+	function hablu_update_draft_mail($db,$mail_to, $mail_sub ,$mail_body,$m_id){
+		$date = date("d-m-Y");
+		$time = date("h:i:s");
+		$mail_id = $m_id;
+		try {
+			$stmt = $db->prepare("UPDATE mail SET reciver_mail = ?, mail_subject= ?, mail_content = ?, mail_date = ?, mail_time = ? WHERE id = ?");
+			$stmt->execute(array($mail_to, $mail_sub, $mail_body, $date, $time,$mail_id));
 			return true;
 		} catch (PDOException $e) {
 			echo "$e";
