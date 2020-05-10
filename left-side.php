@@ -7,19 +7,19 @@
 				  		Create New Mail
 				  	</a>
 				 	<a class="nav-link active" href="index.php">
-				  		Inbox <span class="badge badge-pill badge-primary">5</span>
+				  		Inbox <span class="badge badge-pill badge-primary"><?php print(humlu_mail_unseen_counter($db,'inbox')); ?></span>
 				  	</a>
 				  	<a class="nav-link" href="send.php">
-				  		Send <span class="badge badge-pill badge-primary">5</span>
+				  		Send <span class="badge badge-pill badge-primary"><?php print(humlu_mail_counter_for_sender($db,'inbox')); ?></span>
 				  	</a>
 				  	<a class="nav-link" href="draft.php">
-				  		Draft <span class="badge badge-pill badge-primary">5</span>
+				  		Draft <span class="badge badge-pill badge-primary"><?php print(humlu_mail_counter_for_sender($db,'draft')); ?></span>
 				  	</a>
 				  	<a class="nav-link" href="spam.php">
-				  		Spam <span class="badge badge-pill badge-primary">5</span>
+				  		Spam <span class="badge badge-pill badge-primary"><?php print(humlu_mail_counter($db,'spam')); ?></span>
 				  	</a>
 				  	<a class="nav-link" href="trash.php">
-				  		Trash <span class="badge badge-pill badge-primary">5</span>
+				  		Trash <span class="badge badge-pill badge-primary"><?php print(humlu_mail_counter($db,'trash')); ?></span>
 				  	</a>
 				</nav>
 			</div>

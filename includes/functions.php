@@ -165,15 +165,95 @@
 
 
 
-function hablu_gate_user_info($db, $meber_id){
+	function hablu_gate_user_info($db, $meber_id){
+			try {
+				$stmt = $db->prepare("SELECT * FROM members WHERE memberID = :memberid");
+				$stmt->execute(array(':memberid' => $meber_id));
+
+				$row =$stmt->fetch();
+				return $row;
+
+			} catch(PDOException $e) {}
+	}
+
+
+	function hablu_delete_mail($db,$m_id){
+		$memberid = $_SESSION['memberID'];
+		$mail_status = "trash";
 		try {
-			$stmt = $db->prepare("SELECT * FROM members WHERE memberID = :memberid");
-			$stmt->execute(array(':memberid' => $meber_id));
+			$stmt = $db->prepare("UPDATE mail SET mail_status = ? WHERE id = ? and reciver_id=?");
+			$stmt->execute(array($mail_status, $m_id,$memberid));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
 
-			$row =$stmt->fetch();
-			return $row;
+	function hablu_delete_permanently_mail($db,$m_id){
+		$memberid = $_SESSION['memberID'];
+		$mail_status = "deleted";
+		try {
+			$stmt = $db->prepare("UPDATE mail SET mail_status = ? WHERE id = ? and reciver_id=?");
+			$stmt->execute(array($mail_status, $m_id,$memberid));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
 
-		} catch(PDOException $e) {}
-}
+	function hablu_delete_restore_mail($db,$m_id){
+		$memberid = $_SESSION['memberID'];
+		$mail_status = "inbox";
+		try {
+			$stmt = $db->prepare("UPDATE mail SET mail_status = ? WHERE id = ? and reciver_id=?");
+			$stmt->execute(array($mail_status, $m_id,$memberid));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
 
-	
+
+	// if user seen  this update database
+	function hablu_mail_seen_update($db,$m_id){
+		$memberid = $_SESSION['memberID'];
+		$mail_seen = "seen";
+		try {
+			$stmt = $db->prepare("UPDATE mail SET mail_seen = ? WHERE id = ? and reciver_id=?");
+			$stmt->execute(array($mail_seen, $m_id,$memberid));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+	function humlu_mail_unseen_counter($db,$mail_type)
+	{
+		$counter = 0;
+		foreach ($db->query("SELECT * FROM mail WHERE reciver_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' AND mail_seen ='' order by id desc") as $row){
+				$counter++;
+		}
+		return $counter;
+	}
+
+	function humlu_mail_counter($db,$mail_type)
+	{
+		$counter = 0;
+		foreach ($db->query("SELECT * FROM mail WHERE reciver_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' order by id desc") as $row){
+				$counter++;
+		}
+		return $counter;
+	}
+
+	function humlu_mail_counter_for_sender($db,$mail_type)
+	{
+		$counter = 0;
+		foreach ($db->query("SELECT * FROM mail WHERE sender_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' order by id desc") as $row){
+				$counter++;
+		}
+		return $counter;
+	}

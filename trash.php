@@ -1,26 +1,18 @@
 <?php require_once('header.php'); ?>
 <?php require_once('left-side.php'); ?>
+<?php define('MEMBER_ID', $_SESSION['memberID'])?>
 
 	<div class="h3">Trash</div>
 
-
-			
-				<a href="single.php?mail_id=12" class="msg">
-					<span class="sender">Mr. Hablu</span>
-					<span class="subject">Lorem ipsum dolor sit amet, consectetur </span>
-					<span class="close">10/03/2020</span>
+	<?php foreach ($db->query("SELECT * FROM mail WHERE reciver_id =".MEMBER_ID." AND mail_status = 'trash' order by id desc") as $row){?>
+				<?php $member_details = hablu_gate_user_info($db, $row['sender_id']);?>
+				<!-- single inbox mail -->
+				<a href="single.php?mid=<?php echo $row['id'];?>&ref=trash" class="msg">
+					<span class="sender"><?php echo $member_details['first_name']." ".$member_details['last_name'];  ?></span>
+					<span class="subject"><?php echo $row['mail_subject']; ?> </span>
+					<span class="close"><?php echo $row['mail_date']." / ".$row['mail_time']; ?></span>
 				</a>
+	<?php } ?>
 
-				<a href="#" class="msg">
-					<span class="sender">Mr. Hablu</span>
-					<span class="subject">Lorem ipsum dolor sit amet, consectetur </span>
-					<span class="close">10/03/2020</span>
-				</a>
-
-				<a href="#" class="msg">
-					<span class="sender">Mr. Hablu</span>
-					<span class="subject">Lorem ipsum dolor sit amet, consectetur </span>
-					<span class="close">10/03/2020</span>
-				</a>
-<?php require_once('footer.php'); ?>
+<?php require_once('footer.php'); ?> 
 			
