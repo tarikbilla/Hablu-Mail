@@ -1,4 +1,5 @@
 <?php require('includes/config.php');?>
+<?php require('includes/functions.php');?>
 
 <?php 
 
@@ -8,10 +9,14 @@
 //process login form if submitted
 if(isset($_POST['login'])){
 
-    if (!isset($_POST['username'])) $error[] = "Please fill out all fields";
-    if (!isset($_POST['password'])) $error[] = "Please fill out all fields";
+    if (!isset($_POST['username'])) $error[] = "Please fill out Username fields";
+    if (!isset($_POST['password'])) $error[] = "Please fill out password fields";
 
-    $username = $_POST['username'];
+
+    $username = hablu_filter_username($_POST['username']);
+    
+
+
     if ( $user->isValidUsername($username)){
         if (!isset($_POST['password'])){
             $error[] = 'A password must be entered';
@@ -27,7 +32,7 @@ if(isset($_POST['login'])){
             $error[] = 'Wrong username or password.';
         }
     }else{
-        $error[] = 'Usernames are required to be Alphanumeric, and between 3-16 characters long';
+        $error[] = 'Usernames are required to be Alphanumeric, and between 4-16 characters long';
     }
 
 
@@ -72,7 +77,7 @@ if(isset($_POST['login'])){
                                                 echo "<div class='alert alert-success'>Registration successful!! please login your account.</div>";
                                             } ?>
                                         <form action="" method="post">
-                                            <div class="form-group"><label class="small mb-1" for="inputEmailAddress">UserName</label><input class="form-control py-4" name="username" id="inputEmailAddress" type="text" placeholder="Enter email address" /></div>
+                                            <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Username or Email</label><input class="form-control py-4" name="username" id="inputEmailAddress" type="text" placeholder="Enter username or email address" /></div>
                                             <div class="form-group"><label class="small mb-1" for="inputPassword">Password</label><input class="form-control py-4" name="password" id="inputPassword" type="password" placeholder="Enter password" /></div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox"><input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label" for="rememberPasswordCheck">Remember password</label></div>

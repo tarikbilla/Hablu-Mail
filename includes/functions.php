@@ -231,7 +231,7 @@
 		}
 	}
 
-	function humlu_mail_unseen_counter($db,$mail_type)
+	function hamlu_mail_unseen_counter($db,$mail_type)
 	{
 		$counter = 0;
 		foreach ($db->query("SELECT * FROM mail WHERE reciver_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' AND mail_seen ='' order by id desc") as $row){
@@ -240,7 +240,7 @@
 		return $counter;
 	}
 
-	function humlu_mail_counter($db,$mail_type)
+	function hamlu_mail_counter($db,$mail_type)
 	{
 		$counter = 0;
 		foreach ($db->query("SELECT * FROM mail WHERE reciver_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' order by id desc") as $row){
@@ -249,11 +249,32 @@
 		return $counter;
 	}
 
-	function humlu_mail_counter_for_sender($db,$mail_type)
+	function hamlu_mail_counter_for_sender($db,$mail_type)
 	{
 		$counter = 0;
 		foreach ($db->query("SELECT * FROM mail WHERE sender_id =".$_SESSION['memberID']." AND mail_status = '".$mail_type."' order by id desc") as $row){
 				$counter++;
 		}
 		return $counter;
+	}
+
+
+	function hablu_filter_username($username){
+		// $sta = filter_var($username,FILTER_VALIDATE_EMAIL);
+		$sta = preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $username);
+		if ($sta == 1) {
+
+			$new_username="";
+			for ($i=0; $i < strlen($username) ; $i++) { 
+				if ($username[$i] == '@') {
+					break;
+				}
+
+				$new_username = $new_username.$username[$i];
+			}
+
+			return $new_username;
+		}else{
+			return $username;
+		}
 	}

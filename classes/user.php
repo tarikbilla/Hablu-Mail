@@ -24,7 +24,7 @@ class User extends Password{
 	}
 
 	public function isValidUsername($username){
-		if (strlen($username) < 3) return false;
+		if (strlen($username) < 4) return false;
 		if (strlen($username) > 17) return false;
 		if (!ctype_alnum($username)) return false;
 		return true;
@@ -32,7 +32,7 @@ class User extends Password{
 
 	public function login($username,$password){
 		if (!$this->isValidUsername($username)) return false;
-		if (strlen($password) < 3) return false;
+		if (strlen($password) < 4) return false;
 
 		$row = $this->get_user_hash($username);
 
