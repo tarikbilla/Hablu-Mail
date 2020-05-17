@@ -9,8 +9,9 @@
 		// update if mail seen 
 		hablu_mail_seen_update($db, $m_id);
 
-	foreach ($db->query("SELECT * FROM mail WHERE id =$m_id and reciver_id = ".$_SESSION['memberID']." LIMIT 1") as $row){
+	foreach ($db->query("SELECT * FROM mail WHERE id =$m_id and (reciver_id = ".$_SESSION['memberID']." OR sender_id = ".$_SESSION['memberID'].") LIMIT 1") as $row){
 		$mail_id = $row['id'];
+		$sender_id = $row['sender_id'];
 		$m_sub = $row['mail_subject'];
 		$sender_mail = $row['sender_mail'];
 		$m_date = $row['mail_date'];
@@ -21,10 +22,14 @@
 	?>
 
 	<?php 
+	// get referance from url
 		if(isset($_GET['ref'])){
 			switch ($_GET['ref']) {
 				case 'trash':
-					$trash = true;
+					$ref_trash = true;
+					break;
+				case 'send':
+					$ref_send = true;
 					break;
 				
 				default:
@@ -43,17 +48,24 @@
 			<p>
 				<?php echo $m_content; ?>
 			</p>
-
+			<!-- show button -->
 			<div class="action">
-				<?php if(isset($trash)){?>
+				<?php if(isset($ref_trash)){?>
 				<a href="?id=<?php echo $mail_id;?>&action=restore" class="btn btn-success px-3">Restore</a>
 				<a href="?id=<?php echo $mail_id;?>&action=delper" class="btn btn-danger px-3">Delete Parmanently</a>
 
+				<?php }else if(isset($ref_send)){?>
+
+				<a href="new-mail.php?mid=<?php echo $mail_id;?>&ref=forword" class="btn btn-secondary px-3">Forword</a>
+				<a href="?id=<?php echo $mail_id;?>&action=del" class="btn btn-danger px-3">Delete</a>
+				
 				<?php }else{ ?>
 
 				<a href="mail_replay.php?mid=<?php echo $mail_id;?>" class="btn btn-success px-3">Replay</a>
-				<a href="" class="btn btn-secondary px-3">Forword</a>
+				<a href="new-mail.php?mid=<?php echo $mail_id;?>&ref=forword" class="btn btn-secondary px-3">Forword</a>
 				<a href="?id=<?php echo $mail_id;?>&action=del" class="btn btn-danger px-3">Delete</a>
+				<a href="?uid=<?php echo $sender_id;?>&action=spam" class="btn btn-warning px-3">Spam</a>
+				
 				<?php } ?>
 
 			</div>
@@ -86,6 +98,16 @@
 				}else{
 					$msg ='<div class="alert alert-danger">Faild! please Try again.</div>';
 				}
+				break;
+
+			case 'spam':
+				// spam mail Address
+				$spam_user_id = $_GET['uid'];
+				$spam_sta = hablu_spam_mail($db,$spam_user_id);
+				if($spam_sta==true){
+					header('location:index.php');
+				}
+
 				break;
 
 			case 'restore':

@@ -82,17 +82,32 @@ if (isset($_POST['save'])) {
       header('location:new-mail.php');
     }
 
+    // get data from url
     $m_id = $_GET['mid'];
+    $ref = $_GET['ref'];
 
-  foreach ($db->query("SELECT * FROM mail WHERE id =$m_id and sender_id = ".$_SESSION['memberID']." LIMIT 1") as $row){
-    $m_to = $row['reciver_mail'];
-    $m_sub = $row['mail_subject'];
-    $m_content = $row['mail_content'];
+    if ($ref == 'draft') {
+      foreach ($db->query("SELECT * FROM mail WHERE id =$m_id and sender_id = ".$_SESSION['memberID']." LIMIT 1") as $row){
+        $m_to = $row['reciver_mail'];
+        $m_sub = $row['mail_subject'];
+        $m_content = $row['mail_content'];
 
+      }
     }
 
+
+    if ($ref == 'forword') {
+      foreach ($db->query("SELECT * FROM mail WHERE id =$m_id and reciver_id = ".$_SESSION['memberID']." LIMIT 1") as $row){
+        $m_sub = $row['mail_subject'];
+        $m_content = $row['mail_content'];
+
+      }
+    }
+
+
+
     // if mail id wrong 
-    if (!isset($m_to) || !isset($m_sub) || !isset($m_content)) {
+    if (!isset($m_to) && !isset($m_sub) && !isset($m_content)) {
       header('location:new-mail.php');
     }
 }
@@ -113,7 +128,7 @@ if (isset($_POST['save'])) {
 <form action="" method="post">
   <div class="form-group">
     <label for="">To</label>
-    <input type="email" class="form-control " name="mail_to" id="" placeholder="name@hablumail.com" required <?php if(isset($mail_invalid)){ echo 'style=" border:1px solid #f00;"';} ?>  value="<?php if(isset($m_to)) echo $m_to;?>">
+    <input type="email" class="form-control " name="mail_to" id="" placeholder="Enter mail Address" required <?php if(isset($mail_invalid)){ echo 'style=" border:1px solid #f00;"';} ?>  value="<?php if(isset($m_to)) echo $m_to;?>">
   </div>
   <div class="form-group">
     <label for="">Subject</label>

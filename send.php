@@ -8,7 +8,7 @@
 	<?php foreach ($db->query("SELECT * FROM mail WHERE sender_id =".MEMBER_ID." AND mail_status = 'inbox' order by id desc") as $row){?>
 				<?php $member_details = hablu_gate_user_info($db, $row['reciver_id']);?>
 				<!-- single inbox mail -->
-				<a href="single.php?mid=<?php echo $row['id'];?>" class="msg" >
+				<a href="single.php?mid=<?php echo $row['id'];?>&ref=send" class="msg" >
 					<span class="sender"><?php echo $member_details['first_name']." ".$member_details['last_name'];?></span>
 					<span class="subject"><?php echo $row['mail_subject']; ?> </span>
 					<span class="close"><?php echo $row['mail_date']." / ".$row['mail_time']; ?></span>

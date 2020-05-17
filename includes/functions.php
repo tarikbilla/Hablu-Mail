@@ -278,3 +278,30 @@
 			return $username;
 		}
 	}
+
+
+
+	function hablu_spam_mail($db,$spam_user_id){
+		$user_id = $_SESSION['memberID'];
+		try {
+			$stmt = $db->prepare("INSERT INTO spam_list(user_id, spam_user_id)VALUES(?,?)");
+			$stmt->execute(array($user_id, $spam_user_id));
+			return true;
+		} catch (PDOException $e) {
+			echo "$e";
+			return false;
+		}
+	}
+
+	function hamlu_check_spam_mail($db,$user_id)
+	{
+		$counter = 0;
+		foreach ($db->query("SELECT * FROM spam_list WHERE user_id =".$_SESSION['memberID']." AND spam_user_id = '".$user_id."' order by id desc") as $row){
+				$counter++;
+		}
+		if ($counter>0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
